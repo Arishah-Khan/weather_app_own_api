@@ -1,13 +1,11 @@
 import express from "express";
 import path from "path";
-import cors from "cors";
 import { weatherData } from "./weather-data.js";
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 const __dirname = path.resolve();
-app.use(cors()); 
 app.use("/", express.static(path.join(__dirname, "./weather-frontend/dist"))); 
 
 app.get("/", (req, res) => {
