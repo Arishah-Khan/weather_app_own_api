@@ -1,0 +1,24 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "app.mjs",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/api/weather",
+        "dest": "app.mjs"
+      },
+      {
+        "src": "/api/weather/(.*)",
+        "dest": "app.mjs"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "/weather-frontend/dist/$1"
+      }
+    ]
+  }
+  
