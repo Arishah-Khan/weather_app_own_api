@@ -15,7 +15,7 @@ export default function WeatherApp() {
 
   const fetchWeather = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/weather/${city}`);
+      const response = await axios.get(`https://weatherappownapi-production.up.railway.app/api/weather/${city}`);
       setWeatherData(response.data);
       setError("");
     } catch (err) {
