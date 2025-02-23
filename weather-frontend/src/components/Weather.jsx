@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { motion } from "framer-motion";
+import { ClipLoader } from "react-spinners"; 
 import Swal from "sweetalert2";
+import { motion } from "framer-motion";
 
 const availableCities = [
   "Karachi", "Lahore", "Islamabad", "Quetta", "Peshawar",
@@ -12,10 +13,18 @@ export default function WeatherApp() {
   const [city, setCity] = useState("");
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); 
+
+  const isLocal = window.location.hostname === "localhost";
 
   const fetchWeather = async () => {
+    setLoading(true); 
+    const apiUrl = isLocal
+      ? `http://localhost:5000/api/weather/${city}` 
+      : `https://weatherappownapi-production.up.railway.app/api/weather/${city}`; 
+    
     try {
-      const response = await axios.get(`https://weatherappownapi-production.up.railway.app/api/weather/${city}`);
+      const response = await axios.get(apiUrl);
       setWeatherData(response.data);
       setError("");
     } catch (err) {
@@ -26,6 +35,8 @@ export default function WeatherApp() {
         text: `You can only search for: ${availableCities.join(", ")}`,
       });
       setWeatherData(null);
+    } finally {
+      setLoading(false); 
     }
   };
 
@@ -59,21 +70,25 @@ export default function WeatherApp() {
         </motion.div>
       )}
 
-      {weatherData && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-lg mx-auto">
-          <h2 className="text-3xl font-semibold mb-5 text-center text-purple-600">{weatherData.city} - Current Weather</h2>
-          <ul className="space-y-3 text-lg">
-            <li>🌡️ Temperature: {weatherData.temperature}°C</li>
-            <li>🌥️ Condition: {weatherData.condition}</li>
-            <li>💧 Humidity: {weatherData.humidity}%</li>
-            <li>🔥 Feels Like: {weatherData.feels_like}°C</li>
-            <li>💨 Wind Speed: {weatherData.wind_speed}</li>
-            <li>📈 Pressure: {weatherData.pressure}</li>
-            <li>👁️ Visibility: {weatherData.visibility}</li>
-            <li>🌅 Sunrise: {weatherData.sunrise}</li>
-            <li>🌇 Sunset: {weatherData.sunset}</li>
-          </ul>
-        </motion.div>
+      {loading ? (
+        <ClipLoader size={50} color="#ff6347" loading={loading} />
+      ) : (
+        weatherData && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-lg mx-auto">
+            <h2 className="text-3xl font-semibold mb-5 text-center text-purple-600">{weatherData.city} - Current Weather</h2>
+            <ul className="space-y-3 text-lg">
+              <li>🌡️ Temperature: {weatherData.temperature}°C</li>
+              <li>🌥️ Condition: {weatherData.condition}</li>
+              <li>💧 Humidity: {weatherData.humidity}%</li>
+              <li>🔥 Feels Like: {weatherData.feels_like}°C</li>
+              <li>💨 Wind Speed: {weatherData.wind_speed}</li>
+              <li>📈 Pressure: {weatherData.pressure}</li>
+              <li>👁️ Visibility: {weatherData.visibility}</li>
+              <li>🌅 Sunrise: {weatherData.sunrise}</li>
+              <li>🌇 Sunset: {weatherData.sunset}</li>
+            </ul>
+          </motion.div>
+        )
       )}
     </div>
   );
