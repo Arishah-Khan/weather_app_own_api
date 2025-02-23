@@ -71,7 +71,7 @@ export default function WeatherApp() {
       )}
 
       {loading ? (
-        <ClipLoader size={50} color="#ff6347" loading={loading} />
+        <ClipLoader size={50} color="black" loading={loading} />
       ) : (
         weatherData && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-lg mx-auto">
