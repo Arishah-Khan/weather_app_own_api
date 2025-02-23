@@ -36,6 +36,7 @@ export default function WeatherApp() {
         text: `You can only search for: ${availableCities.join(", ")}`,
       });
       setWeatherData(null);
+      setCity("");
     } finally {
       setLoading(false); 
     }
