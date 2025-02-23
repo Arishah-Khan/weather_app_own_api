@@ -6,26 +6,19 @@ import { weatherData } from "./weather-data.js";
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Static directory setup
 const __dirname = path.resolve();
-app.use(cors()); // Enable CORS
+app.use(cors()); 
 app.use("/", express.static(path.join(__dirname, "./weather-frontend/dist"))); 
 
-// Home Route
 app.get("/", (req, res) => {
   res.send("🌤️ Weather App Server is Running");
 });
 
-// Custom API Route - Serve Static Weather Data
-app.get("/api/weather", (req, res) => {
-  res.json(weatherData); // Sending all weather data
-});
 
-// Specific City Weather Route
 app.get("/api/weather/:cityName", (req, res) => {
   const cityName = req.params.cityName.toLowerCase();
   const cityWeather = weatherData.find(
-    (city) => city.city.toLowerCase() === cityName
+    (data) => data.city.toLowerCase() === cityName
   );
 
   if (cityWeather) {
@@ -35,12 +28,10 @@ app.get("/api/weather/:cityName", (req, res) => {
   }
 });
 
-// 404 Route
 app.use("*", (req, res) => {
   res.status(404).send("404 - Route Not Found");
 });
 
-// Start Server
 app.listen(port, () => {
   console.log(`🚀 Server running on https://weatherappownapi-production.up.railway.app:${port}`);
 });
