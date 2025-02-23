@@ -27,6 +27,7 @@ export default function WeatherApp() {
       const response = await axios.get(apiUrl);
       setWeatherData(response.data);
       setError("");
+      setCity("");
     } catch (err) {
       console.error("API Error:", err.response?.data || err.message);
       Swal.fire({
@@ -71,7 +72,7 @@ export default function WeatherApp() {
       )}
 
       {loading ? (
-        <ClipLoader size={50} color="black" loading={loading} />
+        <ClipLoader size={50} color="white" loading={loading} />
       ) : (
         weatherData && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-lg mx-auto">
